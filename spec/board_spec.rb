@@ -6,7 +6,8 @@ describe Board do
     
     it 'instantiates with the correct default board' do
       board = Board.new
-      expect(Board.positions).to eq((1..42).to_a)
+      board_positions = board.positions
+      expect(board_positions).to eq((1..42).to_a)
     end
   end
 end
