@@ -1,5 +1,5 @@
 class Board
-  attr_reader :positions
+  attr_accessor :positions
 
   def initialize
     @positions = (1..42).to_a
