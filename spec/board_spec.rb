@@ -1,3 +1,5 @@
+require_relative '../lib/board.rb'
+
 describe Board do
   
   context 'when creating an instance of board' do
