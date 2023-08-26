@@ -30,9 +30,23 @@ describe Board do
 
     end
 
-    context 'when the board is not full' do
+    context 'when the board is not not full' do
 
-      it 'returns false' do
+      it 'returns false when completely empty' do
+        expect(board.board_full?).to be(false)
+      end
+
+      it 'returns false when some positions are full' do
+        board.positions = board.positions.map do |row|
+          row.each_with_index.map { |space, idx| idx % 2 == 0 ? space = "x" : space }
+        end
+        
+        expect(board.board_full?).to be(false)
+      end
+
+      it 'returns false when all but one space are taken' do
+        board.positions = board.positions.map { |row| row = ["x", "x", "x", "x", "x", "x", "x"] }
+        board.positions[0][0] = nil
         expect(board.board_full?).to be(false)
       end
     end
