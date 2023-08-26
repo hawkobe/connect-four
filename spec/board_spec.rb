@@ -2,6 +2,8 @@ require_relative '../lib/board.rb'
 
 describe Board do
   
+  subject(:board) { described_class.new }
+
   context 'when creating an instance of board' do
     
     it 'instantiates with the correct default board' do
