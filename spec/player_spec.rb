@@ -19,15 +19,37 @@ describe Player do
 
     context 'when selecting a column to drop a piece into' do
 
-      before do
-        allow(player).to receive(:puts)
-        allow(player).to receive(:gets).and_return("3")
+      context 'when player selects a number within the correct range' do
+
+        before do
+          allow(player).to receive(:puts)
+          allow(player).to receive(:gets).and_return("3")
+        end
+
+        it 'returns the correct column' do
+          expected_return_value = 3
+          actual_return_value = player.select_column
+          expect(actual_return_value).to eq(expected_return_value)
+        end
+
+        it 'does not return column number as a string' do
+          incorrect_return_value = "3"
+          actual_return_value = player.select_column
+          expect(actual_return_value).not_to eql(incorrect_return_value)
+        end
       end
 
-      it 'returns the correct column' do
-        expected_return_value = "3"
-        actual_return_value = player.select_column
-        expect(actual_return_value).to eq(expected_return_value)
+      context 'when player selects a number outside of the correct range' do
+
+        before do
+          allow(player).to receive(:puts)
+          allow(player).to receive(:gets).and_return("jacob")
+        end
+
+        it 'remains in loop' do
+          expect(player).to receive(:puts).with("jacob is an invalid input (Please select a number 1-7)")
+          player.select_column
+        end
       end
     end
   end
