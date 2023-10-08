@@ -51,7 +51,11 @@ class Board
   end
 
   def board_full?
-    @positions.none? { |row| row.include?(nil) }
+    @positions.none? { |row| row.include?("-") }
+  end
+
+  def column_full?(column_number)
+    @positions[column_number].none?('-')
   end
 end
 
