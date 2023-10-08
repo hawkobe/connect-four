@@ -45,15 +45,44 @@ describe Board do
       end
 
       it 'returns false when all but one space are taken' do
-        board.positions = board.positions.map { |row| row = ["x", "x", "x", "x", "x", "x", "x"] }
+        board.positions = board.positions.map { |column| column = ["x", "x", "x", "x", "x", "x", "x"] }
         board.positions[0][0] = '-'
         expect(board.board_full?).to be(false)
       end
     end
   end
 
-  describe '#column_full' do
+  describe '#column_full?' do
 
+    context 'when the row is full' do
+
+      before do
+        board.positions = board.positions.map { |column| column.map { |position| position = "x" } }
+      end
+
+      it 'returns true for selected row' do
+        outputted_response = board.column_full?(0)
+        expect(outputted_response).to be(true)
+      end
+
+      it 'works for every column' do
+        outputted_response = board.column_full?(4)
+        expect(outputted_response).to be(true)
+      end
+    end
+
+    context 'when the column is not full' do
+
+      it 'returns false when totally empty' do
+        outputted_response = board.column_full?(0)
+        expect(outputted_response).to be(false)
+      end
+
+      it 'returns false when partially full' do
+        board.positions[1] = ['x', 'x', '-', 'x', '-', '-', 'x']
+        outputted_response = board.column_full?(1)
+        expect(outputted_response).to be(false)
+      end
+    end
   end
-
 end
