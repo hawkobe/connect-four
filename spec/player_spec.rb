@@ -43,11 +43,11 @@ describe Player do
 
         before do
           allow(player).to receive(:puts)
-          allow(player).to receive(:gets).and_return("jacob")
+          allow(player).to receive(:gets).and_return("jacob", "1")
         end
 
-        it 'remains in loop' do
-          expect(player).to receive(:puts).with("jacob is an invalid input (Please select a number 1-7)")
+        it 'asks the user for a valid input' do
+          expect(player).to receive(:puts).with("jacob is an invalid input (Please select a number 1-7)").once
           player.select_column
         end
       end
