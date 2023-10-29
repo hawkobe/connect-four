@@ -36,4 +36,19 @@ describe ConnectFour do
       end
     end
   end
+
+  describe '#execute_move' do
+    # needs to take #column_full from board class with select_column as arg
+    # and then execute if position available
+    # board.column_full?(@current_player.select_column - 1)
+  end
+
+  describe '#game_over?' do
+    # will probably need to utilize a search graph of some sort
+    # after each move is executed
+  end
+
+  describe '#update_board' do
+    # will need to update the board after each move is executed
+  end
 end
