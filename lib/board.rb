@@ -59,12 +59,12 @@ class Board
   end
 end
 
-board = Board.new
+# board = Board.new
 
-white_marker = "\u25CB"
-black_marker = "\u25CF"
+# black_marker = "\u25CB"
+# white_marker = "\u25CF"
 
-board.positions[5][0] = white_marker
-board.positions[5][1] = black_marker
+# board.positions[5][0] = white_marker
+# board.positions[5][1] = black_marker
 
-board.display
+# board.display
