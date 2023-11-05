@@ -38,9 +38,7 @@ describe ConnectFour do
   end
 
   describe '#execute_move' do
-    # needs to take #column_full from board class with select_column as arg
-    # and then execute if position available
-    # board.column_full?(@current_player.select_column - 1)
+
     before do
       game.instance_variable_set(:@current_player, Player.new("Jacob", "\u25CB"))
     end
@@ -66,6 +64,20 @@ describe ConnectFour do
         game.board.positions[0] = [opposing_player_symbol, opposing_player_symbol, '-', '-', '-', '-', '-']
         game.execute_move(player_selection)
         expect(game.board.positions[0][2]).to eq(current_player_symbol)
+      end
+    end
+
+    context 'when the column doesn\'t have open positions' do
+
+      before do
+        game.board.positions[0] = game.board.positions[0].map { |position| position = "\u25CF" }
+        allow(game).to receive(:gets).and_return("2")
+      end
+
+      it 'doesn\'t allow the player to make a move there' do
+        player_selection = 1
+        expect(game).to receive(:puts).once.with('Column has no available positions, please pick a different column')
+        game.execute_move(player_selection)
       end
     end
   end
