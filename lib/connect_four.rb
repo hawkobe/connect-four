@@ -21,10 +21,16 @@ class ConnectFour
     puts "Thanks, #{@player_two.name}! Your symbol is #{@player_two.symbol}"
   end
 
-  def execute_move(row_number)
-    row_to_change = row_number - 1
-    position_to_change = @board.positions[row_to_change].index('-')
-    @board.positions[row_to_change][position_to_change] = @current_player.symbol
+  def execute_move(column_number)
+    if board.column_full?(column_number -1)
+      puts 'Column has no available positions, please pick a different column'
+      new_column_selection = gets.chomp
+      execute_move(new_column_selection.to_i)
+    else
+      column_to_change = column_number - 1
+      position_to_change = @board.positions[column_to_change].index('-')
+      @board.positions[column_to_change][position_to_change] = @current_player.symbol
+    end
   end    
 end
 
