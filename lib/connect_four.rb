@@ -2,7 +2,7 @@ require_relative 'board.rb'
 require_relative 'player.rb'
 
 class ConnectFour
-  attr_reader :player1
+  attr_reader :player1, :board, :current_player
 
   def initialize
     @board = Board.new
@@ -20,6 +20,12 @@ class ConnectFour
     @player_two = Player.new(player_two_name, "\u25CB")
     puts "Thanks, #{@player_two.name}! Your symbol is #{@player_two.symbol}"
   end
+
+  def execute_move(row_number)
+    row_to_change = row_number - 1
+    position_to_change = @board.positions[row_to_change].index('-')
+    @board.positions[row_to_change][position_to_change] = @current_player.symbol
+  end    
 end
 
 game = ConnectFour.new
