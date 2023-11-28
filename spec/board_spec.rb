@@ -8,7 +8,7 @@ describe Board do
     
     it 'instantiates with the correct default board' do
       board_positions = board.positions
-      expect(board_positions).to eq(Array.new(6) {Array.new(7, '-')})
+      expect(board_positions).to eq(Array.new(7) {Array.new(6, '-')})
     end
   end
 
