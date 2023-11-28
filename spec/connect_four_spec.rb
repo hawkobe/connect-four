@@ -43,6 +43,24 @@ describe ConnectFour do
       game.instance_variable_set(:@current_player, Player.new("Jacob", "\u25CB"))
     end
 
+    context 'when selecting a position' do
+
+      it 'returns the correct position for an empty column' do
+        player_selection = 1
+        position_to_return = [0, 0]
+        selected_position = game.execute_move(player_selection)
+        expect(selected_position).to eq(position_to_return)
+      end
+
+      it 'returns the correct position for a column that has pieces in it' do
+        player_selection = 1
+        game.board.positions[0][0] = "\u25CF"
+        position_to_return = [0, 1]
+        selected_position = game.execute_move(player_selection)
+        expect(selected_position).to eq(position_to_return)
+      end
+    end
+
     context 'when the column has open positions' do
 
       it 'puts the token in the correct column' do
@@ -61,7 +79,7 @@ describe ConnectFour do
         player_selection = 1
         current_player_symbol = game.current_player.symbol
         opposing_player_symbol = "\u25CF"
-        game.board.positions[0] = [opposing_player_symbol, opposing_player_symbol, '-', '-', '-', '-', '-']
+        game.board.positions[0] = [opposing_player_symbol, opposing_player_symbol, '-', '-', '-', '-']
         game.execute_move(player_selection)
         expect(game.board.positions[0][2]).to eq(current_player_symbol)
       end
@@ -83,8 +101,40 @@ describe ConnectFour do
   end
 
   describe '#game_over?' do
-    # will probably need to utilize a search graph of some sort
-    # after each move is executed
+
+  end
+
+  describe '#veritcal_win?' do
+    context 'when there are three of the same symbol in a row below it' do
+      it 'correctly assigns vertical win' do
+        player_one_symbol = "\u25CF"
+        player_one_position = [0, 3]
+        game.board.positions[0] = [player_one_symbol, player_one_symbol, player_one_symbol, '-', '-', '-']
+        result = game.veritcal_win?(player_one_position, player_one_symbol)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when there are less than three pieces below it' do
+      it 'does not assign a vertical win' do
+        player_one_symbol = "\u25CF"
+        player_one_position = [0, 2]
+        game.board.positions[0] = [player_one_symbol, player_one_symbol, '-', '-', '-', '-']
+        result = game.veritcal_win?(player_one_position, player_one_symbol)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when there are 2 of the current players pieces and 1 opposing players piece' do
+      it 'does not assign a vertical win' do
+        player_one_symbol = "\u25CF"
+        player_two_symbol = "\u25CB"
+        player_one_position = [0, 3]
+        game.board.positions[0] = [player_one_symbol, player_two_symbol, player_one_symbol, '-', '-', '-']
+        result = game.veritcal_win?(player_one_position, player_one_symbol)
+        expect(result).to be(false)
+      end
+    end
   end
 
   describe '#update_board' do
