@@ -2,7 +2,7 @@ require_relative 'board.rb'
 require_relative 'player.rb'
 
 class ConnectFour
-  attr_reader :player1, :board, :current_player
+  attr_reader :player_one, :board, :current_player
 
   def initialize
     @board = Board.new
@@ -22,7 +22,7 @@ class ConnectFour
   end
 
   def execute_move(column_number)
-    if board.column_full?(column_number -1)
+    if board.column_full?(column_number - 1)
       puts 'Column has no available positions, please pick a different column'
       new_column_selection = gets.chomp
       execute_move(new_column_selection.to_i)
@@ -30,12 +30,33 @@ class ConnectFour
       column_to_change = column_number - 1
       position_to_change = @board.positions[column_to_change].index('-')
       @board.positions[column_to_change][position_to_change] = @current_player.symbol
+      [column_to_change, position_to_change]
     end
-  end    
+  end
+
+  #change these params to include symbol then will use @current_player.symbol when the method is called
+  def veritcal_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if position_in_column <= 2
+
+    for i in 1..3
+      if @board.positions[column][position_in_column - i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
 end
 
-game = ConnectFour.new
-game.player_setup
+# game = ConnectFour.new
+# game.instance_variable_set(:@current_player, Player.new("Jacob", "\u25CF"))
 
+# game.execute_move(1)
+# game.board.display
 
 # study private methods again to figure out how to not have to use attr_accessor
