@@ -1,5 +1,6 @@
 require_relative '../lib/connect_four.rb'
 require_relative '../lib/board.rb'
+require 'rspec'
 
 describe ConnectFour do
 
@@ -107,31 +108,85 @@ describe ConnectFour do
   describe '#veritcal_win?' do
     context 'when there are three of the same symbol in a row below it' do
       it 'correctly assigns vertical win' do
-        player_one_symbol = "\u25CF"
-        player_one_position = [0, 3]
-        game.board.positions[0] = [player_one_symbol, player_one_symbol, player_one_symbol, '-', '-', '-']
-        result = game.veritcal_win?(player_one_position, player_one_symbol)
+        current_player_symbol = "\u25CF"
+        current_player_position = [0, 3]
+        game.board.positions[0] = [current_player_symbol, current_player_symbol, current_player_symbol, '-', '-', '-']
+        result = game.veritcal_win?(current_player_position, current_player_symbol)
         expect(result).to be(true)
       end
     end
 
     context 'when there are less than three pieces below it' do
       it 'does not assign a vertical win' do
-        player_one_symbol = "\u25CF"
-        player_one_position = [0, 2]
-        game.board.positions[0] = [player_one_symbol, player_one_symbol, '-', '-', '-', '-']
-        result = game.veritcal_win?(player_one_position, player_one_symbol)
+        current_player_symbol = "\u25CF"
+        current_player_position = [0, 2]
+        game.board.positions[0] = [current_player_symbol, current_player_symbol, '-', '-', '-', '-']
+        result = game.veritcal_win?(current_player_position, current_player_symbol)
         expect(result).to be(false)
       end
     end
 
     context 'when there are 2 of the current players pieces and 1 opposing players piece' do
       it 'does not assign a vertical win' do
-        player_one_symbol = "\u25CF"
-        player_two_symbol = "\u25CB"
-        player_one_position = [0, 3]
-        game.board.positions[0] = [player_one_symbol, player_two_symbol, player_one_symbol, '-', '-', '-']
-        result = game.veritcal_win?(player_one_position, player_one_symbol)
+        current_player_symbol = "\u25CF"
+        opposing_player_symbol = "\u25CB"
+        current_player_position = [0, 3]
+        game.board.positions[0] = [current_player_symbol, opposing_player_symbol, current_player_symbol, '-', '-', '-']
+        result = game.veritcal_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#diag_down_left_win?' do
+    
+    let(:current_player_symbol)  { "\u25CF" }
+    let(:opposing_player_symbol)  { "\u25CB" }
+
+    context 'when there are 3 pieces diagonally left and down from chosen position' do
+      it 'correctly assigns diagonal down left win' do
+        current_player_position = [3, 3]
+        game.board.positions[0][0] = current_player_symbol
+        game.board.positions[1][1] = current_player_symbol
+        game.board.positions[2][2] = current_player_symbol
+        result = game.diag_down_left_win?(current_player_position, current_player_symbol)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when there are two correct pieces and one opposing piece' do
+      it 'does not assign a diagonal down left win' do
+        current_player_position = [3, 3]
+        game.board.positions[0][0] = current_player_symbol
+        game.board.positions[1][1] = opposing_player_symbol
+        game.board.positions[2][2] = current_player_symbol
+        result = game.diag_down_left_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when the chosen position is in a column less than three' do
+      it 'automatically returns false in column one' do
+        current_player_position = [0, 0]
+        result = game.diag_down_left_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'automatically returns false in column two' do
+        current_player_position = [1, 0]
+        result = game.diag_down_left_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'automatically returns false in column three' do
+        current_player_position = [2, 0]
+        result = game.diag_down_left_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'automatically returns false in column less than three when position in column is greater than 3' do
+        current_player_position = [1, 4]
+        result = game.diag_down_left_win?(current_player_position, current_player_symbol)
         expect(result).to be(false)
       end
     end
