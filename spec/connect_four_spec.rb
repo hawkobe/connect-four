@@ -138,6 +138,56 @@ describe ConnectFour do
     end
   end
 
+  describe '#horizontal_win?' do
+    let(:current_player_symbol)  { "\u25CF" }
+    let(:opposing_player_symbol)  { "\u25CB" }
+
+    context 'when there are three of the player\'s pieces in a row next to the players position' do
+      context 'when there are three pieces to the left' do
+        it 'correctly assigns left horizontal win' do
+          current_player_position = [3, 0]
+          game.board.positions[0][0] = current_player_symbol
+          game.board.positions[1][0] = current_player_symbol
+          game.board.positions[2][0] = current_player_symbol
+          result = game.horizontal_win?(current_player_position, current_player_symbol)
+          expect(result).to be(true)
+        end
+      end
+
+      context 'when there are three pieces to the right' do
+        it 'correctly assigns right vertical win' do
+          current_player_position = [0, 0]
+          game.board.positions[1][0] = current_player_symbol
+          game.board.positions[2][0] = current_player_symbol
+          game.board.positions[3][0] = current_player_symbol
+          result = game.horizontal_win?(current_player_position, current_player_symbol)
+          expect(result).to be(true)
+        end
+      end
+    end
+
+    context 'when there are 2 correct pieces and 1 incorrect piece next to the players position' do
+      it 'does not assign left horizontal win' do
+        current_player_position = [3, 0]
+        game.board.positions[0][0] = current_player_symbol
+        game.board.positions[1][0] = opposing_player_symbol
+        game.board.positions[2][0] = current_player_symbol
+        result = game.horizontal_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'does not assign right horizontal win' do
+        current_player_position = [0, 0]
+        game.board.positions[1][0] = current_player_symbol
+        game.board.positions[2][0] = opposing_player_symbol
+        game.board.positions[3][0] = current_player_symbol
+        result = game.horizontal_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+
   describe '#diag_down_left_win?' do
     
     let(:current_player_symbol)  { "\u25CF" }
@@ -184,9 +234,63 @@ describe ConnectFour do
         expect(result).to be(false)
       end
 
-      it 'automatically returns false in column less than three when position in column is greater than 3' do
+      it 'automatically returns false in column three or less when position in column is greater than 3' do
         current_player_position = [1, 4]
         result = game.diag_down_left_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#diag_down_right_win?' do
+    
+    let(:current_player_symbol)  { "\u25CF" }
+    let(:opposing_player_symbol)  { "\u25CB" }
+
+    context 'when there are 3 pieces diagonally right and down from chosen position' do
+      it 'correctly assigns diagonal down right win' do
+        current_player_position = [0, 3]
+        game.board.positions[1][2] = current_player_symbol
+        game.board.positions[2][1] = current_player_symbol
+        game.board.positions[3][0] = current_player_symbol
+        result = game.diag_down_right_win?(current_player_position, current_player_symbol)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when there are two correct pieces and one opposing piece' do
+      it 'does not assign a diagonal down right win' do
+        current_player_position = [0, 3]
+        game.board.positions[1][2] = current_player_symbol
+        game.board.positions[2][1] = opposing_player_symbol
+        game.board.positions[3][0] = current_player_symbol
+        result = game.diag_down_right_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when the chosen position is in a column less than three' do
+      it 'automatically returns false in column five' do
+        current_player_position = [4, 0]
+        result = game.diag_down_right_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'automatically returns false in column six' do
+        current_player_position = [5, 0]
+        result = game.diag_down_right_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'automatically returns false in column seven' do
+        current_player_position = [6, 0]
+        result = game.diag_down_right_win?(current_player_position, current_player_symbol)
+        expect(result).to be(false)
+      end
+
+      it 'automatically returns false in column four or less when position in column is greater than 3' do
+        current_player_position = [3, 4]
+        result = game.diag_down_right_win?(current_player_position, current_player_symbol)
         expect(result).to be(false)
       end
     end
