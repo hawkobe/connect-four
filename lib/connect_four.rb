@@ -21,6 +21,21 @@ class ConnectFour
     puts "Thanks, #{@player_two.name}! Your symbol is #{@player_two.symbol}"
   end
 
+  # def play
+  #   until game_over?
+  #   end
+  # end
+
+  def game_over?(position_array, symbol)
+    veritcal_win?(position_array, symbol) || 
+    horizontal_win?(position_array, symbol) || 
+    diag_down_left_win?(position_array, symbol) || 
+    diag_down_right_win?(position_array, symbol) || 
+    diag_up_left_win?(position_array, symbol) || 
+    diag_up_right_win?(position_array, symbol) ||
+    board.board_full?
+  end
+
   def execute_move(column_number)
     if board.column_full?(column_number - 1)
       puts 'Column has no available positions, please pick a different column'
@@ -108,6 +123,39 @@ class ConnectFour
     true
   end
 
+  def diag_up_right_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if column > 3 || position_in_column > 3
+
+    for i in 1..3
+      if @board.positions[column + i][position_in_column + i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
+
+  def diag_up_left_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if column < 3 || position_in_column > 3
+
+    for i in 1..3
+      if @board.positions[column - i][position_in_column + i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
 end
 
 # game = ConnectFour.new
