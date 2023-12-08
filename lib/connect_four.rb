@@ -99,7 +99,3 @@ class ConnectFour
     end
   end
 end
-
-game = ConnectFour.new
-
-game.play
