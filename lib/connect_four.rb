@@ -13,15 +13,23 @@ class ConnectFour
     puts "Player 1, please enter your name".white
     player_one_name = gets.chomp
     @player_one = Player.new(player_one_name, "\u25CF".red)
-    puts "Thanks, #{@player_one.name}! Your symbol is #{@player_one.symbol}".white
+    print "Thanks, #{@player_one.name}! Your symbol is".white
+    puts " #{@player_one.symbol}"
     print "\n"
     puts "Player 2, please enter your name".white
     player_two_name = gets.chomp
     @player_two = Player.new(player_two_name, "\u25CB".yellow)
-    puts "Thanks, #{@player_two.name}! Your symbol is #{@player_two.symbol}".white
+    print "Thanks, #{@player_two.name}! Your symbol is".white
+    puts  " #{@player_two.symbol}"
     print "\n"
 
     @current_player = [@player_one, @player_two].sample
+  end
+
+  def play
+    intro_message
+    player_setup
+    game_loop
   end
 
   def game_loop
@@ -46,6 +54,23 @@ class ConnectFour
     puts "Wow, it looks like it was a draw!"
     puts "Here's your final board"
     board.display
+  end
+
+  def intro_message
+    message = <<~HEREDOC.white
+              Welcome to Connect Four, the game where two players
+              compete against one another to try to connect four of
+              their own pieces in a row. Each player will take a turn
+              dropping their pieces into a specified column -- this
+              will place your piece in that column at the next
+              available slot. 
+              
+              When it's your turn, just choose a number 1-7 that
+              corresponds to the column where you'd like to place
+              your piece. First to four in a row vertically,
+              horizontally, or diagonally wins! Good Luck!
+              HEREDOC
+    puts message
   end
 
   def game_won?(position_array, symbol)
@@ -76,10 +101,5 @@ class ConnectFour
 end
 
 game = ConnectFour.new
-# game.instance_variable_set(:@current_player, Player.new("Jacob", "\u25CF"))
 
-game.player_setup
-
-game.game_loop
-
-# study private methods again to figure out how to not have to use attr_accessor
+game.play
