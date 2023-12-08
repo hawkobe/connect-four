@@ -63,14 +63,122 @@ class Board
     end
     selected_column.to_i
   end
+
+  def veritcal_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if position_in_column <= 2
+
+    for i in 1..3
+      if @positions[column][position_in_column - i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
+
+  def horizontal_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    for i in 1..3
+      if column > 2
+        if @positions[column - i][position_in_column] == symbol
+          next
+        else
+          return false
+        end
+      else
+        if @positions[column + i][position_in_column] == symbol
+          next
+        else
+          return false
+        end
+      end
+    end
+
+    true
+  end
+
+  def diag_down_left_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if column < 3 || position_in_column < 3
+
+    for i in 1..3
+      if @positions[column - i][position_in_column - i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
+
+  def diag_down_right_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if column > 3 || position_in_column < 3
+
+    for i in 1..3
+      if @positions[column + i][position_in_column - i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
+
+  def diag_up_right_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if column > 3 || position_in_column > 3
+
+    for i in 1..3
+      if @positions[column + i][position_in_column + i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
+
+  def diag_up_left_win?(position_array, symbol)
+    column = position_array[0]
+    position_in_column = position_array[1]
+
+    return false if column < 3 || position_in_column > 3
+
+    for i in 1..3
+      if @positions[column - i][position_in_column + i] == symbol
+        next
+      else
+        return false
+      end
+    end
+
+    true
+  end
 end
 
-# board = Board.new
+# = Board.new
 
 # black_marker = "\u25CB"
 # white_marker = "\u25CF"
 
-# board.positions[5][0] = white_marker
-# board.positions[5][1] = black_marker
+# positions[5][0] = white_marker
+# positions[5][1] = black_marker
 
-# board.display
+# display
