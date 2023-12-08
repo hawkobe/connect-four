@@ -49,12 +49,12 @@ class ConnectFour
   end
 
   def game_won?(position_array, symbol)
-    veritcal_win?(position_array, symbol) || 
-    horizontal_win?(position_array, symbol) ||
-    diag_down_left_win?(position_array, symbol) || 
-    diag_down_right_win?(position_array, symbol) || 
-    diag_up_left_win?(position_array, symbol) || 
-    diag_up_right_win?(position_array, symbol)
+    @board.veritcal_win?(position_array, symbol) || 
+    @board.horizontal_win?(position_array, symbol) ||
+    @board.diag_down_left_win?(position_array, symbol) || 
+    @board.diag_down_right_win?(position_array, symbol) || 
+    @board.diag_up_left_win?(position_array, symbol) || 
+    @board.diag_up_right_win?(position_array, symbol)
   end
 
   def switch_player
@@ -72,114 +72,6 @@ class ConnectFour
       @board.positions[column_to_change][position_to_change] = @current_player.symbol
       [column_to_change, position_to_change]
     end
-  end
-
-  def veritcal_win?(position_array, symbol)
-    column = position_array[0]
-    position_in_column = position_array[1]
-
-    return false if position_in_column <= 2
-
-    for i in 1..3
-      if @board.positions[column][position_in_column - i] == symbol
-        next
-      else
-        return false
-      end
-    end
-
-    true
-  end
-
-  def horizontal_win?(position_array, symbol)
-    column = position_array[0]
-    position_in_column = position_array[1]
-
-    for i in 1..3
-      if column > 2
-        if @board.positions[column - i][position_in_column] == symbol
-          next
-        else
-          return false
-        end
-      else
-        if @board.positions[column + i][position_in_column] == symbol
-          next
-        else
-          return false
-        end
-      end
-    end
-
-    true
-  end
-
-  def diag_down_left_win?(position_array, symbol)
-    column = position_array[0]
-    position_in_column = position_array[1]
-
-    return false if column < 3 || position_in_column < 3
-
-    for i in 1..3
-      if @board.positions[column - i][position_in_column - i] == symbol
-        next
-      else
-        return false
-      end
-    end
-
-    true
-  end
-
-  def diag_down_right_win?(position_array, symbol)
-    column = position_array[0]
-    position_in_column = position_array[1]
-
-    return false if column > 3 || position_in_column < 3
-
-    for i in 1..3
-      if @board.positions[column + i][position_in_column - i] == symbol
-        next
-      else
-        return false
-      end
-    end
-
-    true
-  end
-
-  def diag_up_right_win?(position_array, symbol)
-    column = position_array[0]
-    position_in_column = position_array[1]
-
-    return false if column > 3 || position_in_column > 3
-
-    for i in 1..3
-      if @board.positions[column + i][position_in_column + i] == symbol
-        next
-      else
-        return false
-      end
-    end
-
-    true
-  end
-
-  def diag_up_left_win?(position_array, symbol)
-    column = position_array[0]
-    position_in_column = position_array[1]
-
-    return false if column < 3 || position_in_column > 3
-
-    for i in 1..3
-      if @board.positions[column - i][position_in_column + i] == symbol
-        next
-      else
-        return false
-      end
-    end
-
-    true
   end
 end
 
