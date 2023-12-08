@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Board
   attr_accessor :positions
 
@@ -7,56 +9,40 @@ class Board
 
   def display
     print "\n"
-    puts "     1    2    3    4    5    6    7 "
+    puts "      1    2    3    4    5    6    7 ".white
     print "\n"
-    # @positions.each_with_index do |row, idx|
-      # print "  "
-
-      # if idx == 0
-      #   print "\u2554"
-      # else
-      #   print "\u2560"
-      # end
-
-      # 35.times { print "\u2550" }
-
-    #   if idx == 0
-    #     print "\u2557"
-    #   else
-    #     print "\u2563"
-    #   end
-
-    #   print "\n"
-    #   print "  \u2551\u3016"
-
-    #   row.each_with_index do |space, idx|
-    #     if idx == 6
-    #       print "#{space}\u3017\u2551"
-    #     else
-    #       print "#{space}\u3017\u3016"
-    #     end
-    #   end
-    #   print "\n"
-    # end
-    # print "  \u255A"
-    # 35.times { print "\u2550" }
-    # puts "\u255D"
-    # print "  \u2551"
-    # 35.times {print " "}
-    # puts "\u2551"
-    # print " \u2550\u2569\u2550"
-    # 33.times {print " "}
-    # puts "\u2550\u2569\u2550"
-    # 2.times { print "\n" }
-
     i = 5
     while i >= 0
-      @positions.each do |column|
-        print "#{column[i]} "
+      if i == 5
+        print "   \u2554".blue
+        35.times { print "\u2550".blue}
+        print "\u2557".blue
+        print "\n"
       end
+      print "   \u2551".blue
+      @positions.each do |column|
+        print "\u3016".blue
+        print "#{column[i]}"
+        print "\u3017".blue
+      end
+      print "\u2551".blue
       print "\n"
+      print "   \u2560".blue unless i == 0
+      35.times { print "\u2550".blue } unless i == 0
+      print "\u2563".blue unless i == 0
+      print "\n" unless i == 0
       i -= 1
     end
+    print "   \u255A".blue
+    35.times { print "\u2550".blue }
+    puts "\u255D".blue
+    print "   \u2551".blue
+    35.times {print " "}
+    puts "\u2551".blue
+    print "  \u2550\u2569\u2550".blue
+    33.times {print " "}
+    puts "\u2550\u2569\u2550".blue
+    2.times { print "\n" }
   end
 
   def board_full?
@@ -65,6 +51,17 @@ class Board
 
   def column_full?(column_number)
     @positions[column_number].none?('-')
+  end
+
+  def select_column
+    puts "Please select a column in which you would like to drop your piece"
+    regex = /^[1-7]$/
+    selected_column = gets.chomp 
+    until regex.match? selected_column
+      puts "#{selected_column} is an invalid input (Please select a number 1-7)"
+      selected_column = gets.chomp
+    end
+    selected_column.to_i
   end
 end
 
