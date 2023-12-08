@@ -101,7 +101,36 @@ describe ConnectFour do
     end
   end
 
-  describe '#update_board' do
-    # will need to update the board after each move is executed
+  describe '#switch_player' do
+
+    it 'switches to player two when player one is current player' do
+      game.instance_variable_set(:@player_one, "Jacob")
+      game.instance_variable_set(:@player_two, "Crystal")
+      game.instance_variable_set(:@current_player, "Jacob")
+
+      game.switch_player
+      current_player = game.instance_variable_get(:@current_player)
+      expect(current_player).to eq("Crystal")
+    end
+
+    it 'switches to player one when player two is current player' do
+      game.instance_variable_set(:@player_one, "Jacob")
+      game.instance_variable_set(:@player_two, "Crystal")
+      game.instance_variable_set(:@current_player, "Crystal")
+
+      game.switch_player
+      current_player = game.instance_variable_get(:@current_player)
+      expect(current_player).to eq("Jacob")
+    end
+
+    it 'switches to player one when current player is nil' do
+      game.instance_variable_set(:@player_one, "Jacob")
+      game.instance_variable_set(:@player_two, "Crystal")
+      game.instance_variable_set(:@current_player, nil)
+
+      game.switch_player
+      current_player = game.instance_variable_get(:@current_player)
+      expect(current_player).to eq("Jacob")
+    end
   end
 end
