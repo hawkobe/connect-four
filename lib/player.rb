@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Player
   attr_reader :name, :symbol
 
@@ -7,9 +9,9 @@ class Player
   end
 
   def select_column
-    puts "Please select a column in which you would like to drop your piece"
+    puts 'Please select a column in which you would like to drop your piece'
     regex = /^[1-7]$/
-    selected_column = gets.chomp 
+    selected_column = gets.chomp
     until regex.match? selected_column
       puts "#{selected_column} is an invalid input (Please select a number 1-7)"
       selected_column = gets.chomp

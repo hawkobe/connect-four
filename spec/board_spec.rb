@@ -1,51 +1,48 @@
-require_relative '../lib/board.rb'
+# frozen_string_literal: true
+
+require_relative '../lib/board'
 
 describe Board do
-  
   subject(:board) { described_class.new }
 
   context 'when creating an instance of board' do
-    
     it 'instantiates with the correct default board' do
       board_positions = board.positions
-      expect(board_positions).to eq(Array.new(7) {Array.new(6, '-')})
+      expect(board_positions).to eq(Array.new(7) { Array.new(6, '-') })
     end
   end
 
   describe '#board_full?' do
-
     context 'when the board is full' do
-
       before do
         board.instance_variable_set(
-          :@positions, 
+          :@positions,
           board.positions.map do |row|
-          row.map { |position| position = 'x' }
-        end)
-      end 
+            row.map { |_position| position = 'x' }
+          end
+        )
+      end
 
       it 'returns true' do
         expect(board.board_full?).to be(true)
       end
-
     end
 
     context 'when the board is not not full' do
-
       it 'returns false when completely empty' do
         expect(board.board_full?).to be(false)
       end
 
       it 'returns false when some positions are full' do
         board.positions = board.positions.map do |row|
-          row.each_with_index.map { |space, idx| idx % 2 == 0 ? space = "x" : space }
+          row.each_with_index.map { |space, idx| idx.even? ? space = 'x' : space }
         end
-        
+
         expect(board.board_full?).to be(false)
       end
 
       it 'returns false when all but one space are taken' do
-        board.positions = board.positions.map { |column| column = ["x", "x", "x", "x", "x", "x", "x"] }
+        board.positions = board.positions.map { |_column| column = %w[x x x x x x x] }
         board.positions[0][0] = '-'
         expect(board.board_full?).to be(false)
       end
@@ -53,11 +50,9 @@ describe Board do
   end
 
   describe '#column_full?' do
-
     context 'when the row is full' do
-
       before do
-        board.positions = board.positions.map { |column| column.map { |position| position = "x" } }
+        board.positions = board.positions.map { |column| column.map { |_position| position = 'x' } }
       end
 
       it 'returns true for selected row' do
@@ -72,7 +67,6 @@ describe Board do
     end
 
     context 'when the column is not full' do
-
       it 'returns false when totally empty' do
         outputted_response = board.column_full?(0)
         expect(outputted_response).to be(false)
@@ -120,7 +114,7 @@ describe Board do
   end
 
   describe '#horizontal_win?' do
-    let(:current_player_symbol)  { "\u25CF" }
+    let(:current_player_symbol) { "\u25CF" }
     let(:opposing_player_symbol)  { "\u25CB" }
 
     context 'when there are three of the player\'s pieces in a row next to the players position' do
@@ -168,10 +162,9 @@ describe Board do
     end
   end
 
-
   describe '#diag_down_left_win?' do
-    let(:current_player_symbol)  { "\u25CF" }
-    let(:opposing_player_symbol)  { "\u25CB" }
+    let(:current_player_symbol) { "\u25CF" }
+    let(:opposing_player_symbol) { "\u25CB" }
 
     context 'when there are 3 pieces diagonally left and down from chosen position' do
       it 'correctly assigns diagonal down left win' do
@@ -223,9 +216,8 @@ describe Board do
   end
 
   describe '#diag_down_right_win?' do
-    
-    let(:current_player_symbol)  { "\u25CF" }
-    let(:opposing_player_symbol)  { "\u25CB" }
+    let(:current_player_symbol) { "\u25CF" }
+    let(:opposing_player_symbol) { "\u25CB" }
 
     context 'when there are 3 pieces diagonally right and down from chosen position' do
       it 'correctly assigns diagonal down right win' do
@@ -277,8 +269,8 @@ describe Board do
 
     describe '#diag_up_right_win?' do
       let(:current_player_symbol)  { "\u25CF" }
-      let(:opposing_player_symbol)  { "\u25CB" }
-  
+      let(:opposing_player_symbol) { "\u25CB" }
+
       context 'when there are 3 pieces diagonally right and up from chosen position' do
         it 'correctly assigns diagonal up right win' do
           current_player_position = [0, 0]
@@ -289,7 +281,7 @@ describe Board do
           expect(result).to be(true)
         end
       end
-  
+
       context 'when there are two correct pieces and one opposing piece' do
         it 'does not assign a diagonal up right win' do
           current_player_position = [0, 3]
@@ -300,20 +292,20 @@ describe Board do
           expect(result).to be(false)
         end
       end
-  
+
       context 'when the chosen position is in a column more than four' do
         it 'automatically returns false in column five' do
           current_player_position = [4, 0]
           result = board.diag_up_right_win?(current_player_position, current_player_symbol)
           expect(result).to be(false)
         end
-  
+
         it 'automatically returns false in column six' do
           current_player_position = [5, 0]
           result = board.diag_up_right_win?(current_player_position, current_player_symbol)
           expect(result).to be(false)
         end
-  
+
         it 'automatically returns false in column seven' do
           current_player_position = [6, 0]
           result = board.diag_up_right_win?(current_player_position, current_player_symbol)
@@ -329,9 +321,9 @@ describe Board do
     end
 
     describe '#diag_up_left_win?' do
-      let(:current_player_symbol)  { "\u25CF" }
-      let(:opposing_player_symbol)  { "\u25CB" }
-  
+      let(:current_player_symbol) { "\u25CF" }
+      let(:opposing_player_symbol) { "\u25CB" }
+
       context 'when there are 3 pieces diagonally left and up from chosen position' do
         it 'correctly assigns diagonal up left win' do
           current_player_position = [3, 0]
@@ -342,7 +334,7 @@ describe Board do
           expect(result).to be(true)
         end
       end
-  
+
       context 'when there are two correct pieces and one opposing piece' do
         it 'does not assign a diagonal up left win' do
           current_player_position = [3, 0]
@@ -353,26 +345,26 @@ describe Board do
           expect(result).to be(false)
         end
       end
-  
+
       context 'when the chosen position is in a column less than three' do
         it 'automatically returns false in column one' do
           current_player_position = [0, 0]
           result = board.diag_up_left_win?(current_player_position, current_player_symbol)
           expect(result).to be(false)
         end
-  
+
         it 'automatically returns false in column two' do
           current_player_position = [1, 0]
           result = board.diag_up_left_win?(current_player_position, current_player_symbol)
           expect(result).to be(false)
         end
-  
+
         it 'automatically returns false in column three' do
           current_player_position = [2, 0]
           result = board.diag_up_left_win?(current_player_position, current_player_symbol)
           expect(result).to be(false)
         end
-  
+
         it 'automatically returns false in column three or less when position in column is greater than three' do
           current_player_position = [1, 4]
           result = board.diag_down_left_win?(current_player_position, current_player_symbol)

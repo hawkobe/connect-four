@@ -1,24 +1,23 @@
-require_relative '../lib/connect_four.rb'
-require_relative '../lib/board.rb'
+# frozen_string_literal: true
+
+require_relative '../lib/connect_four'
+require_relative '../lib/board'
 require 'rspec'
 
 describe ConnectFour do
-
   subject(:game) { described_class.new }
 
   describe '#player_setup' do
-
     context 'when setting up players' do
-      
       before do
         allow(game).to receive(:puts)
-        allow(game).to receive(:gets).and_return("Jacob", "Crystal")
+        allow(game).to receive(:gets).and_return('Jacob', 'Crystal')
         game.player_setup
       end
 
       it 'sets up a player class for player 1 with the correct name' do
         player_one_name = game.instance_variable_get(:@player_one).name
-        expect(player_one_name).to eq("Jacob")
+        expect(player_one_name).to eq('Jacob')
       end
 
       it 'sets up the correct symbol for player 1' do
@@ -28,7 +27,7 @@ describe ConnectFour do
 
       it 'sets up player class for player 2 with the correct name' do
         player_two_name = game.instance_variable_get(:@player_two).name
-        expect(player_two_name).to eq("Crystal")
+        expect(player_two_name).to eq('Crystal')
       end
 
       it 'sets up the correct symbol for player 2' do
@@ -39,13 +38,11 @@ describe ConnectFour do
   end
 
   describe '#execute_move' do
-
     before do
-      game.instance_variable_set(:@current_player, Player.new("Jacob", "\u25CB"))
+      game.instance_variable_set(:@current_player, Player.new('Jacob', "\u25CB"))
     end
 
     context 'when selecting a position' do
-
       it 'returns the correct position for an empty column' do
         player_selection = 1
         position_to_return = [0, 0]
@@ -63,12 +60,11 @@ describe ConnectFour do
     end
 
     context 'when the column has open positions' do
-
       it 'puts the token in the correct column' do
         player_selection = 1
         expect { game.execute_move(player_selection) }.to change { game.board.positions[0] }
       end
-      
+
       it 'puts the symbol in the correct position when column is empty' do
         player_selection = 1
         current_player_symbol = game.current_player.symbol
@@ -87,10 +83,9 @@ describe ConnectFour do
     end
 
     context 'when the column doesn\'t have open positions' do
-
       before do
-        game.board.positions[0] = game.board.positions[0].map { |position| position = "\u25CF" }
-        allow(game).to receive(:gets).and_return("2")
+        game.board.positions[0] = game.board.positions[0].map { |_position| position = "\u25CF" }
+        allow(game).to receive(:gets).and_return('2')
       end
 
       it 'doesn\'t allow the player to make a move there' do
@@ -102,35 +97,34 @@ describe ConnectFour do
   end
 
   describe '#switch_player' do
-
     it 'switches to player two when player one is current player' do
-      game.instance_variable_set(:@player_one, "Jacob")
-      game.instance_variable_set(:@player_two, "Crystal")
-      game.instance_variable_set(:@current_player, "Jacob")
+      game.instance_variable_set(:@player_one, 'Jacob')
+      game.instance_variable_set(:@player_two, 'Crystal')
+      game.instance_variable_set(:@current_player, 'Jacob')
 
       game.switch_player
       current_player = game.instance_variable_get(:@current_player)
-      expect(current_player).to eq("Crystal")
+      expect(current_player).to eq('Crystal')
     end
 
     it 'switches to player one when player two is current player' do
-      game.instance_variable_set(:@player_one, "Jacob")
-      game.instance_variable_set(:@player_two, "Crystal")
-      game.instance_variable_set(:@current_player, "Crystal")
+      game.instance_variable_set(:@player_one, 'Jacob')
+      game.instance_variable_set(:@player_two, 'Crystal')
+      game.instance_variable_set(:@current_player, 'Crystal')
 
       game.switch_player
       current_player = game.instance_variable_get(:@current_player)
-      expect(current_player).to eq("Jacob")
+      expect(current_player).to eq('Jacob')
     end
 
     it 'switches to player one when current player is nil' do
-      game.instance_variable_set(:@player_one, "Jacob")
-      game.instance_variable_set(:@player_two, "Crystal")
+      game.instance_variable_set(:@player_one, 'Jacob')
+      game.instance_variable_set(:@player_two, 'Crystal')
       game.instance_variable_set(:@current_player, nil)
 
       game.switch_player
       current_player = game.instance_variable_get(:@current_player)
-      expect(current_player).to eq("Jacob")
+      expect(current_player).to eq('Jacob')
     end
   end
 end
